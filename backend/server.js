@@ -36,28 +36,21 @@ app.get('/api/health', (req, res) => {
   res.json({ status: 'ok', time: new Date() });
 });
 
-// ======================================
-// ✅ FRONTEND SERVE (FIXED VERSION)
-// ======================================
+const distPath = path.join(__dirname, '../frontend/dist');
 
-// static files (JS, CSS, images)
-app.use(express.static(path.join(__dirname, '../frontend/dist')));
+// 1️⃣ Static files serve (IMPORTANT)
+app.use(express.static(distPath));
 
-// ✅ smart fallback (IMPORTANT FIX)
-app.get('*', (req, res, next) => {
+// 2️⃣ React fallback ONLY for non-file routes
+app.get('*', (req, res) => {
 
-  // agar API call hai → skip
-  if (req.path.startsWith('/api')) {
-    return next();
+  // ❌ agar file request hai (css/js/png/etc) → ignore
+  if (req.path.includes('.') || req.path.startsWith('/api')) {
+    return res.status(404).end();
   }
 
-  // agar static file hai (.js, .css, .png, etc) → skip
-  if (req.path.includes('.')) {
-    return next();
-  }
-
-  // warna React app serve karo
-  res.sendFile(path.join(__dirname, '../frontend/dist/index.html'));
+  // ✅ React app serve
+  res.sendFile(path.join(distPath, 'index.html'));
 });
 
 // ======================================
