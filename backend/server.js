@@ -37,12 +37,15 @@ app.get('/api/health', (req, res) => {
 
 // ================= FRONTEND SERVE =================
 
-// 👇 VERY IMPORTANT: build folder serve karo
-app.use(express.static(path.join(__dirname, 'dist')));
+// ✅ Correct path (VERY IMPORTANT)
+const frontendPath = path.join(__dirname, '../frontend/dist');
 
-// 👇 React/Vite routing handle karega
+// Serve static files
+app.use(express.static(frontendPath));
+
+// Handle React routing
 app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'dist', 'index.html'));
+  res.sendFile(path.join(frontendPath, 'index.html'));
 });
 
 // ================= SERVER START =================
