@@ -40,13 +40,10 @@ app.get('/api/health', (req, res) => {
 // ✅ FRONTEND SERVE (MAIN FIX)
 // ======================================
 
-// 👉 IMPORTANT: dist should be inside backend folder
 const distPath = path.join(__dirname, 'dist');
 
-// static files serve (JS, CSS, images)
 app.use(express.static(distPath));
 
-// React fallback (only for routes, not files)
 app.get('*', (req, res) => {
   res.sendFile(path.join(distPath, 'index.html'));
 });
