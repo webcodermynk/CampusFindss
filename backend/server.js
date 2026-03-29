@@ -14,6 +14,7 @@ app.use(cors({
   origin: process.env.CLIENT_URL || 'http://localhost:3000',
   credentials: true
 }));
+
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '20mb' }));
 
@@ -35,19 +36,31 @@ app.get('/api/health', (req, res) => {
   res.json({ status: 'ok', time: new Date() });
 });
 
-// ===============================
-// ✅ FRONTEND SERVE (IMPORTANT)
-// ===============================
+// ======================================
+// ✅ FRONTEND SERVE (FIXED VERSION)
+// ======================================
 
-// static files serve karo (React/Vite build)
+// static files (JS, CSS, images)
 app.use(express.static(path.join(__dirname, '../frontend/dist')));
 
-// React routing handle karega
-app.get('*', (req, res) => {
+// ✅ smart fallback (IMPORTANT FIX)
+app.get('*', (req, res, next) => {
+
+  // agar API call hai → skip
+  if (req.path.startsWith('/api')) {
+    return next();
+  }
+
+  // agar static file hai (.js, .css, .png, etc) → skip
+  if (req.path.includes('.')) {
+    return next();
+  }
+
+  // warna React app serve karo
   res.sendFile(path.join(__dirname, '../frontend/dist/index.html'));
 });
 
-// ===============================
+// ======================================
 
 // ✅ Start server
 const PORT = process.env.PORT || 5000;
