@@ -222,13 +222,13 @@ export default function AdminDashboard({ showPage }) {
         {/* ── System Health ── */}
         <div style={{ marginTop:"2rem", background:"var(--surface,#fff)", borderRadius:16, border:"1.5px solid var(--border-color,#e8ecf0)", padding:"1.1rem 1.5rem", display:"flex", gap:"2rem", flexWrap:"wrap", alignItems:"center" }}>
           <div style={{ fontWeight:800, fontSize:"0.85rem", color:"var(--text,#1e293b)" }}>🔧 System Status</div>
-          {["Database","API Server","Email Service","File Storage"].map(label => (
+          {["Database","API Server","Feedback Service","File Storage"].map(label => (
             <div key={label} style={{ display:"flex", alignItems:"center", gap:"0.4rem" }}>
               <span style={{ width:7, height:7, borderRadius:"50%", background:"#10b981", display:"inline-block", boxShadow:"0 0 6px #10b981" }}/>
               <span style={{ fontSize:"0.79rem", color:"var(--text-2,#475569)", fontWeight:600 }}>{label}</span>
             </div>
           ))}
-          <span style={{ marginLeft:"auto", fontSize:"0.77rem", color:"#94a3b8" }}>Chandigarh University · CampusFinds v4.0</span>
+          <span style={{ marginLeft:"auto", fontSize:"0.77rem", color:"#94a3b8" }}>Chandigarh University · CampusFinds</span>
         </div>
 
       </div>
