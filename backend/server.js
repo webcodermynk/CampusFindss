@@ -36,16 +36,25 @@ app.get('/api/health', (req, res) => {
 });
 
 
-// 🔥 VERY IMPORTANT (Frontend serve)
-app.use(express.static(path.join(__dirname, "dist")));
+// 🔥🔥 FRONTEND SERVE (IMPORTANT FIX)
 
-app.get("*", (req, res) => {
-  res.sendFile(path.join(__dirname, "dist", "index.html"));
+// yeh path assume karta hai:
+// project/
+//   ├── backend/
+//   ├── frontend/dist/
+
+const frontendPath = path.join(__dirname, '../frontend/dist');
+
+app.use(express.static(frontendPath));
+
+app.get('*', (req, res) => {
+  res.sendFile(path.join(frontendPath, 'index.html'));
 });
 
 
-// Start server
+// Server start
 const PORT = process.env.PORT || 5000;
+
 app.listen(PORT, () => {
   console.log(`🚀 Server running on port ${PORT}`);
 });
