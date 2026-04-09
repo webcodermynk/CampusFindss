@@ -117,12 +117,13 @@ runDataRetention();
 setInterval(runClaimAutoDelete, 60 * 60 * 1000);
 setInterval(runDataRetention,   60 * 60 * 1000);
 
-// ================= FRONTEND SERVE (MOST IMPORTANT) =================
+// ================= FRONTEND SERVE (VITE FIX) =================
 if (process.env.NODE_ENV === 'production') {
-  app.use(express.static(path.join(__dirname, 'client/build')));
+  // IMPORTANT: Vite build output = dist
+  app.use(express.static(path.join(__dirname, '../frontend/dist')));
 
   app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, 'client/build/index.html'));
+    res.sendFile(path.join(__dirname, '../frontend/dist/index.html'));
   });
 }
 
