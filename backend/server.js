@@ -9,17 +9,18 @@ connectDB();
 
 const app = express();
 
-// Middleware
+// ================= MIDDLEWARE =================
 app.use(cors({
   origin: process.env.CLIENT_URL || 'http://localhost:3000',
   credentials: true
 }));
+
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '20mb' }));
 
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
-// ================= ROUTES =================
+// ================= API ROUTES =================
 app.use('/api/users',       require('./routes/users'));
 app.use('/api/admin',       require('./routes/admin'));
 app.use('/api/lost-items',  require('./routes/lostItems'));
@@ -33,11 +34,6 @@ app.use('/api/settings',    require('./routes/settings'));
 // Health check
 app.get('/api/health', (req, res) => {
   res.json({ status: 'ok', time: new Date() });
-});
-
-// ================= ROOT FIX =================
-app.get('/', (req, res) => {
-  res.send('🚀 CampusFinds API is running...');
 });
 
 // ================= CRON LOGIC =================
@@ -121,9 +117,7 @@ runDataRetention();
 setInterval(runClaimAutoDelete, 60 * 60 * 1000);
 setInterval(runDataRetention,   60 * 60 * 1000);
 
-// ================= FRONTEND SERVE (IMPORTANT) =================
-
-// React build serve (Render ke liye MUST)
+// ================= FRONTEND SERVE (MOST IMPORTANT) =================
 if (process.env.NODE_ENV === 'production') {
   app.use(express.static(path.join(__dirname, 'client/build')));
 
@@ -132,7 +126,7 @@ if (process.env.NODE_ENV === 'production') {
   });
 }
 
-// ================= SERVER START =================
+// ================= SERVER =================
 const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, () => {
